@@ -16,6 +16,7 @@ function AppTextInput({ icon, width = "100%", ...otherProps }) {
         />
       )}
       <TextInput
+        autoCapitalize="none"
         placeholderTextColor={StylesShare.medium}
         style={StylesShare.fontFamily}
         {...otherProps}
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
     backgroundColor: StylesShare.light,
     borderRadius: 25,
     flexDirection: "row",
-    paddingHorizontal: 10,
+    padding: 10,
     marginVertical: 10,
   },
   icon: {

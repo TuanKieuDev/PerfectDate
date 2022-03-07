@@ -15,6 +15,6 @@ const styles = StyleSheet.create({
         //color: 'black',
         textTransform: 'uppercase',
         textAlign:'center',
-        paddingTop: 90,
+        paddingTop: 110,
     }
 })

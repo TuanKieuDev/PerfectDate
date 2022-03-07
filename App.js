@@ -5,11 +5,12 @@ import Register from './src/screens/Register';
 import Personal from './src/screens/Personal'; 
 import Heading from './src/components/Heading';
 import StylesShare from './src/config/styles';
+import RootStack from './src/navigation/RootStack'
 
 const App = () => {
 
   return (
-    <SignIn/>
+    <RootStack/>
   );
 };
 
