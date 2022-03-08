@@ -13,11 +13,12 @@ export default function App() {
   return (
       <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: 'red',
-        tabBarInactiveTintColor: 'yellow',
+        tabBarActiveTintColor: StylesShare.app,
+        tabBarInactiveTintColor: 'gray',
         tabBarStyle: {
           backgroundColor: '#fff',
         },
+        headerShown: false
       }}
       >
         <Tab.Screen 

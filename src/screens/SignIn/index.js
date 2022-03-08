@@ -90,7 +90,7 @@ const SignIn = () => {
             <AppButton color='app' textColor={'white'} title="ĐĂNG NHẬP" onPress={()=> navigation.navigate('MainTab')} />
           )}
           <Text style={{fontFamily: StylesShare.fontFamily, fontSize:14, textAlign:'center', marginTop:50}}>Bạn chưa có tài khoản? </Text>
-          <AppButton color='secondary' textColor={'white'} title="ĐĂNG KÍ" onPress={signOutUser} />
+          <AppButton color='secondary' textColor={'white'} title="ĐĂNG KÍ" onPress={()=>navigation.navigate('SignUp')} />
         </View>
       </ImageBackground>
     </View>
