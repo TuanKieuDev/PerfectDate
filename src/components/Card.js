@@ -5,15 +5,20 @@ import {
   Dimensions,
   Image,
   Animated,
+  Button,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useCallback} from 'react';
 import StylesShare from '../config/styles';
 import LinearGradient from 'react-native-linear-gradient';
 import Choice from './Choice';
+import { useNavigation } from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('screen');
 
 const Card = ({name, source, isFirst, swipe, tiltSign, ...rest}) => {
+  const navigation = useNavigation();
+
   const rotate = Animated.multiply(swipe.x, tiltSign).interpolate({
     inputRange: [-100, 0, 100],
     outputRange: ['8deg', '0deg', '-8deg'],
@@ -64,6 +69,9 @@ const Card = ({name, source, isFirst, swipe, tiltSign, ...rest}) => {
       />
       <Text style={styles.name}>{name}</Text>
       {isFirst && renderChoice()}
+      <TouchableOpacity onPress={()=>navigation.navigate("DiscoverDetail")}>
+        <Text style={styles.detail}>Chi tiết</Text>
+      </TouchableOpacity>
     </Animated.View>
   );
 };
@@ -97,6 +105,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#fff',
     fontFamily: StylesShare.fontFamily,
+  },
+  detail: {
+    color:'orange', 
+    position:'absolute', 
+    bottom:30, 
+    right:10,
+    fontFamily: StylesShare.fontFamily,
+    fontSize: 15,
   },
   choiceContainer: {
     position: 'absolute',

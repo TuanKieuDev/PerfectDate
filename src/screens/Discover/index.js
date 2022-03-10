@@ -11,25 +11,51 @@ import React, {useState, useEffect, useRef, useCallback} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import AppButton from '../../components/Button';
 import {db} from '../../../firebase/firebase-config';
-import {collection, getDocs} from 'firebase/firestore/lite';
+import {collection, getDocs, where, query} from 'firebase/firestore/lite';
 import Card from '../../components/Card';
 import StylesShare from '../../config/styles';
+import Footer from '../../components/Footer';
+import RoundButton from '../../components/RoundButton';
 
 const Discover = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [isGirl, setIsGirl] = useState(true);
 
   useEffect(() => {
-    getData();
-  }, [data.length==0]);
+    setLoading(true);
+    isGirl?getDataFemale():getDataMale();
+  }, [data.length == 0]);
 
-  const getData = async () => {
-    const modelCol = collection(db, 'model');
-    const modelSnapshot = await getDocs(modelCol);
-    setLoading(false);
-    const modelList = modelSnapshot.docs.map(doc => doc.data());
-    setData(modelList);
+  const getDataMale = async () => {
+    const modelCol = query(
+      collection(db, 'model'),
+      where('genres', '==', 'male'),
+    );
+    try {
+      const modelSnapshot = await getDocs(modelCol);
+      setLoading(false);
+      const modelList = modelSnapshot.docs.map(doc => doc.data());
+      setData(modelList);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  const getDataFemale = async () => {
+    const modelCol = query(
+      collection(db, 'model'),
+      where('genres', '==', 'female'),
+    );
+    try {
+      const modelSnapshot = await getDocs(modelCol);
+      setLoading(false);
+      const modelList = modelSnapshot.docs.map(doc => doc.data());
+      setData(modelList);
+    } catch (error) {
+      console.log('error', error);
+    }
   };
 
   const swipe = useRef(new Animated.ValueXY()).current;
@@ -66,10 +92,10 @@ const Discover = () => {
     },
   });
 
-  const removeTopCard = useCallback(()=>{
-    setData((prevState)=>prevState.slice(1));
-    swipe.setValue({x: 0, y: 0})
-  }, [swipe])
+  const removeTopCard = useCallback(() => {
+    setData(prevState => prevState.slice(1));
+    swipe.setValue({x: 0, y: 0});
+  }, [swipe]);
 
   return (
     <SafeAreaView>
@@ -95,6 +121,10 @@ const Discover = () => {
               );
             })
             .reverse()}
+          <View style={styles.choiceButton}>
+            <RoundButton name="female" size={30} color="#ff006f" onPress={()=>{getDataFemale();setIsGirl(true)}}/>
+            <RoundButton name="male" size={30} color="#00eda6" onPress={()=>{getDataMale();setIsGirl(false)}}/>
+          </View>
         </View>
       )}
     </SafeAreaView>
@@ -108,5 +138,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fafafa',
     alignItems: 'center',
+  },
+  choiceButton: {
+    position: 'absolute',
+    flexDirection: 'row',
+    top: StylesShare.screenHeight * 0.82,
+    width: 170,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    zIndex: -1,
   },
 });
