@@ -7,8 +7,8 @@ import StylesShare from '../../config/styles';
 import AppButton from '../../components/Button';
 import AppTextInput from '../../components/TextInput';
 import ErrorMessage from '../../components/ErrorMessage'
-import { stringify } from '@firebase/util';
 import { useNavigation } from '@react-navigation/native';
+
 
 const SignIn = () => {
   const navigation = useNavigation()
@@ -87,6 +87,7 @@ const SignIn = () => {
           {isSignedIn === true ? (
             <AppButton color='app' textColor={'white'} title="ĐĂNG XUẤT" onPress={signOutUser} />
           ) : (
+            //<AppButton color='app' textColor={'white'} title="ĐĂNG NHẬP" onPress={getData} />
             <AppButton color='app' textColor={'white'} title="ĐĂNG NHẬP" onPress={()=> navigation.navigate('MainTab')} />
           )}
           <Text style={{fontFamily: StylesShare.fontFamily, fontSize:14, textAlign:'center', marginTop:50}}>Bạn chưa có tài khoản? </Text>
