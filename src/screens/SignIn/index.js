@@ -1,18 +1,17 @@
 import {StyleSheet, Text, View, Image, ImageBackground, ActivityIndicator} from 'react-native';
 import React, {useState} from 'react';
-import {signInWithEmailAndPassword, signOut} from 'firebase/auth';
-import {authentication} from '../../../firebase/firebase-config';
 import Heading from '../../components/Heading';
 import StylesShare from '../../config/styles';
 import AppButton from '../../components/Button';
 import AppTextInput from '../../components/TextInput';
 import ErrorMessage from '../../components/ErrorMessage'
 import { useNavigation } from '@react-navigation/native';
+import { query, collection, where, getDocs } from 'firebase/firestore/lite';
+import { db } from '../../../firebase/firebase-config';
 
 
 const SignIn = () => {
   const navigation = useNavigation()
-  const [isSignedIn, setIsSignedIn] = useState(false);
   //text input state
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,36 +19,24 @@ const SignIn = () => {
   const [loginFailed, setLoginFailed] = useState(false);
   const [loading,setLoading] = useState(false);
 
-  const signInUser = () => {
-    setLoading(true);
-    signInWithEmailAndPassword(authentication, email, password)
-      .then(re => {
-        console.log(re);
-        setIsSignedIn(true);
-        setLoading(false);
-      })
-      .catch(re => {
-        console.log(re);
-        setLoginFailed(true);
-        setLoading(false);
-        if(re.code === 'auth/invalid-email')
-          setError('Email của bạn hợp lệ');
-        else if(re.code === 'auth/wrong-password')
-          setError('Mật khẩu của bạn không đúng/hợp lệ')
-        else 
-          setError('Tài khoản không tồn tại')
-      });
-  };
-
-  const signOutUser = () => {
-    signOut(authentication)
-      .then(re => {
-        setIsSignedIn(false);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
+  const handleLogin = async(email,password) => {
+    const accountCol = query(
+      collection(db, 'users'),
+      where('email', '==', email),
+      where('password', '==', password)
+    );
+    try {
+      const accountSnapshot = await getDocs(accountCol);
+      const accountList = accountSnapshot.docs.map(doc => doc.data());
+      if (accountList.length>0) {
+        navigation.navigate('MainTab')
+      }else{
+        alert('Đăng nhập thất bại')
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  }
 
   return (
     <View style={{flex: 1}}>
@@ -84,12 +71,8 @@ const SignIn = () => {
               secureTextEntry
             />
             
-          {isSignedIn === true ? (
-            <AppButton color='app' textColor={'white'} title="ĐĂNG XUẤT" onPress={signOutUser} />
-          ) : (
-            //<AppButton color='app' textColor={'white'} title="ĐĂNG NHẬP" onPress={getData} />
-            <AppButton color='app' textColor={'white'} title="ĐĂNG NHẬP" onPress={()=> navigation.navigate('MainTab')} />
-          )}
+          
+          <AppButton color='app' textColor={'white'} title="ĐĂNG NHẬP" onPress={()=> handleLogin(email,password)} />
           <Text style={{fontFamily: StylesShare.fontFamily, fontSize:14, textAlign:'center', marginTop:50}}>Bạn chưa có tài khoản? </Text>
           <AppButton color='secondary' textColor={'white'} title="ĐĂNG KÍ" onPress={()=>navigation.navigate('SignUp')} />
         </View>

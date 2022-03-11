@@ -1,4 +1,11 @@
-import {StyleSheet, Text, View, Image, ImageBackground, ActivityIndicator} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ImageBackground,
+  ActivityIndicator,
+} from 'react-native';
 import React, {useState} from 'react';
 import {createUserWithEmailAndPassword} from 'firebase/auth';
 import {authentication} from '../../../firebase/firebase-config';
@@ -6,28 +13,110 @@ import Heading from '../../components/Heading';
 import StylesShare from '../../config/styles';
 import AppButton from '../../components/Button';
 import AppTextInput from '../../components/TextInput';
-import ErrorMessage from '../../components/ErrorMessage'
-import { stringify } from '@firebase/util';
-import { useNavigation } from '@react-navigation/native';
+import ErrorMessage from '../../components/ErrorMessage';
+import {useNavigation} from '@react-navigation/native';
+import { doc, setDoc, query, collection, where, getDocs } from 'firebase/firestore/lite';
+import { db } from '../../../firebase/firebase-config';
 
 const Register = () => {
-  const navigation = useNavigation()
-  const [isSignedIn, setIsSignedIn] = useState(false);
+  const navigation = useNavigation();
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [cf_password, setCfPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loginFailed, setLoginFailed] = useState(false);
+  const [errorEmail, setErrorEmail] = useState('');
+  const [errorPassword, setErrorPassword] = useState('');
+  const [errorCfPassword, setErrorCfPassword] = useState('');
+  const [errorUsername, setErrorUsername] = useState('');
 
-  const registerUser = () => {
-        createUserWithEmailAndPassword(authentication, email, password)
-          .then(re => {
-            setIsSignedIn(true);
-          })
-          .catch(re => {
-            console.log(re);
-          });
-      };
+  // const registerUser = () => {
+  //       createUserWithEmailAndPassword(authentication, email, password)
+  //         .then(re => {
+  //           setIsSignedIn(true);
+  //         })
+  //         .catch(re => {
+  //           console.log(re);
+  //         });
+  //     };
+
+  const validateEmail = email => {
+    var emailRe = /\S+@\S+\.\S+/;
+    return emailRe.test(email);
+  };
+
+  const validatePassword = password => {
+    //it nhat 1 ki tu in hoa, 1 ki in thuong, 1 chu so va do dai >=8
+    let passRe = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/
+    return passRe.test(password)
+  };
+
+  const validateForm = async(e, p, u) => {
+    if (validateEmail(e) && validatePassword(p)) {
+      return true
+    } 
+    if(!validateEmail(e)){
+      setErrorEmail('Vui lòng điền email theo mẫu: abc@xyz.com')
+    } 
+    if(!validatePassword(p)){
+      setErrorPassword('Mật khẩu phải có ít nhất 8 kí tư, bao gồm chữ in hoa, in thường và chữ số')
+    }
+    if(!a){
+      setErrorEmail('Tài khoản đã tồn tại')
+    }
+    // if(password!=cf_password){
+    //   setErrorCfPassword('Xác nhận mật khẩu không khớp, vui lòng thử lại.')
+    // }
+    return false
+  }
+
+  const checkExist = async(email) => {
+    const emailCol = query(
+      collection(db, 'users'),
+      where('email', '==', email),
+    );
+    try {
+      const emailSnapshot = await getDocs(emailCol);
+      const emailList = emailSnapshot.docs.map(doc => doc.data());
+      if (emailList.length>0) {
+        setErrorEmail('Email đã tồn tại, vui lòng thử lại.')
+        return true
+      }
+      return false
+    } catch (error) {
+      console.log('error', error);
+    }
+  }
+
+  const checkEmpty = (e,p,u) => {
+    if(e.trim().length>0 && p.trim().length>0 && u.trim().length>0)
+      return true
+    return false
+  }
+
+  const handleSubmit = async({email, password, username}) => {
+    const ran = Math.floor(Math.random() * 100000000)
+    const check = await checkExist(email)
+    console.log(check);
+    if(validateForm(email,password,username)&&!check&&checkEmpty(email,password,username)){
+      try {
+        await setDoc(doc(db, "users", `${ran}`), {
+          dated: [],
+          email: email,
+          like: [],
+          password: password,
+          points:1000,
+          username: username,
+        })
+        alert('Đăng kí thành công')
+        navigation.navigate('SignIn')
+      } catch (error) {
+        console.log(error);
+      } 
+    }else{
+      alert('Đăng kí thất bại')
+    }
+  }
+
 
   return (
     <View style={{flex: 1}}>
@@ -38,38 +127,60 @@ const Register = () => {
           backgroundColor: 'black',
         }}
         resizeMode="cover">
-        <Image source={require('../../assets/icons/Logo.png')} style={styles.logo}/>
+        <Image
+          source={require('../../assets/icons/Logo.png')}
+          style={styles.logo}
+        />
         <Heading style={{color: 'white'}}>Perfect Date</Heading>
-        <Text style={{fontFamily: StylesShare.fontFamily, textAlign:'center', color:'white', fontStyle:'italic'}}>Hẹn hò là chuyện nhỏ</Text>
+        <Text
+          style={{
+            fontFamily: StylesShare.fontFamily,
+            textAlign: 'center',
+            color: 'white',
+            fontStyle: 'italic',
+          }}>
+          Hẹn hò là chuyện nhỏ
+        </Text>
         <View style={styles.mainField}>
-            <ErrorMessage
-                error={error}
-                visible={loginFailed}
-            />
-            <AppTextInput
-              placeholder="Email"
-              icon="user"
-              value={email}
-              onChangeText={text => setEmail(text)}
-            />
-            
-            <AppTextInput
-              placeholder="Password"
-              icon="key"
-              value={password}
-              onChangeText={password => setPassword(password)}
-              secureTextEntry
-            />
+          <AppTextInput
+            placeholder="Username"
+            icon="user"
+            value={username}
+            onChangeText={username => setUsername(username)}
+          />
 
-            <AppTextInput
-              placeholder="Confirm password"
-              icon="key"
-              value={cf_password}
-              onChangeText={cf_password => setCfPassword(cf_password)}
-              secureTextEntry
-            />
-            
-          <AppButton color='app' textColor={'white'} title="Xác nhận" onPress={()=>navigation.navigate('SignIn')} />
+          <AppTextInput
+            placeholder="Email"
+            icon="user"
+            value={email}
+            onChangeText={text => setEmail(text)}
+          />
+          <ErrorMessage error={errorEmail} visible={!validateEmail(email)||checkExist(email)} />
+
+          <AppTextInput
+            placeholder="Password"
+            icon="key"
+            value={password}
+            onChangeText={password => setPassword(password)}
+            secureTextEntry
+          />
+          <ErrorMessage error={errorPassword} visible={!validatePassword(password)} />
+
+          {/* <AppTextInput
+            placeholder="Confirm password"
+            icon="key"
+            value={cf_password}
+            onChangeText={cf_password => setCfPassword(cf_password)}
+            secureTextEntry
+          />
+          <ErrorMessage error={errorCfPassword} visible={password==cf_password?false:true} /> */}
+
+          <AppButton
+            color="app"
+            textColor={'white'}
+            title="Xác nhận"
+            onPress={()=>handleSubmit({email,password,username})}
+          />
         </View>
       </ImageBackground>
     </View>
@@ -85,14 +196,13 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     padding: 20,
-    marginTop:StylesShare.screenHeight/20,
+    marginTop: StylesShare.screenHeight / 20,
   },
   logo: {
-    width:74, 
-    height:70, 
-    position:'absolute',
-    top:30,
-    left:(StylesShare.screenWidth/2)-37
-  }
+    width: 74,
+    height: 70,
+    position: 'absolute',
+    top: 30,
+    left: StylesShare.screenWidth / 2 - 37,
+  },
 });
-

@@ -16,7 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('screen');
 
-const Card = ({name, source, isFirst, swipe, tiltSign, ...rest}) => {
+const Card = ({name, source, isFirst, swipe, tiltSign, screenName, ...rest}) => {
   const navigation = useNavigation();
 
   const rotate = Animated.multiply(swipe.x, tiltSign).interpolate({
@@ -69,7 +69,7 @@ const Card = ({name, source, isFirst, swipe, tiltSign, ...rest}) => {
       />
       <Text style={styles.name}>{name}</Text>
       {isFirst && renderChoice()}
-      <TouchableOpacity onPress={()=>navigation.navigate("DiscoverDetail")}>
+      <TouchableOpacity onPress={()=>navigation.navigate(screenName)}>
         <Text style={styles.detail}>Chi tiết</Text>
       </TouchableOpacity>
     </Animated.View>

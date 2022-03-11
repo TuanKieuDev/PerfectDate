@@ -116,6 +116,7 @@ const Discover = () => {
                   isFirst={isFirst}
                   swipe={swipe}
                   tiltSign={tiltSign}
+                  screenName="DiscoverDetail"
                   {...dragHandlers}
                 />
               );
