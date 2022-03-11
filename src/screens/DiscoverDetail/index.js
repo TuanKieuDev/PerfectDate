@@ -1,14 +1,16 @@
-import { StyleSheet, Text, View, Button } from 'react-native'
+import { StyleSheet, Text, View, Button, SafeAreaView } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 
-const DiscoverDetail = () => {
+const DiscoverDetail = ({route}) => {
   const navigation = useNavigation()
+  const name = route.params
+  console.log('name', name);
   return (
-    <View>
-      <Text>DiscoverDetail</Text>
+    <SafeAreaView>
+      <Text>{name}</Text>
       <Button title='Checkout' onPress={()=> navigation.navigate('Checkout')}/>
-    </View>
+    </SafeAreaView>
   )
 }
 

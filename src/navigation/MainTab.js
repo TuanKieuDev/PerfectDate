@@ -18,15 +18,16 @@ export default function App() {
         tabBarStyle: {
           backgroundColor: '#fff',
         },
-        headerShown: false
+        headerShown: false,
       }}
+      tabBarOptions={{showLabel:false}}
       >
         <Tab.Screen 
         name="DiscoverStack" 
         component={DiscoverStack}
         options={{
             tabBarIcon: ({focused, color, size}) => {
-              return <Icon name='search' size={20} color={color}/>;
+              return <Icon name='search' size={25} color={color}/>;
             },
           }}
         />
@@ -35,7 +36,7 @@ export default function App() {
         component={FavouriteStack}
         options={{
             tabBarIcon: ({focused, color, size}) => {
-              return <Icon name='heartbeat' size={20} color={color}/>;
+              return <Icon name='heartbeat' size={25} color={color}/>;
             },
           }}
         />
@@ -44,7 +45,7 @@ export default function App() {
         component={PersonalStack}
         options={{
             tabBarIcon: ({focused, color, size}) => {
-              return <Icon name='user-circle' size={20} color={color}/>;
+              return <Icon name='user-circle' size={25} color={color}/>;
             },
           }}
         />

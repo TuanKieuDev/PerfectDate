@@ -9,12 +9,10 @@ import {
 } from 'react-native';
 import React, {useState, useEffect, useRef, useCallback} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import AppButton from '../../components/Button';
 import {db} from '../../../firebase/firebase-config';
 import {collection, getDocs, where, query} from 'firebase/firestore/lite';
 import Card from '../../components/Card';
 import StylesShare from '../../config/styles';
-import Footer from '../../components/Footer';
 import RoundButton from '../../components/RoundButton';
 
 const Discover = () => {
@@ -143,7 +141,7 @@ const styles = StyleSheet.create({
   choiceButton: {
     position: 'absolute',
     flexDirection: 'row',
-    top: StylesShare.screenHeight * 0.82,
+    top: StylesShare.screenHeight * 0.76,
     width: 170,
     alignItems: 'center',
     justifyContent: 'space-between',

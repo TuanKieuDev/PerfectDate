@@ -69,7 +69,7 @@ const Card = ({name, source, isFirst, swipe, tiltSign, screenName, ...rest}) => 
       />
       <Text style={styles.name}>{name}</Text>
       {isFirst && renderChoice()}
-      <TouchableOpacity onPress={()=>navigation.navigate(screenName)}>
+      <TouchableOpacity onPress={()=>navigation.navigate(screenName, name)}>
         <Text style={styles.detail}>Chi tiết</Text>
       </TouchableOpacity>
     </Animated.View>
@@ -81,12 +81,12 @@ export default Card;
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 20,
+    top: 10,
     //top: 50,
   },
   image: {
     width: width * 0.9,
-    height: height * 0.75,
+    height: height * 0.73,
     borderRadius: 20,
   },
   gradient: {
