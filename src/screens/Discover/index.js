@@ -102,7 +102,7 @@ const Discover = () => {
       ) : (
         <View style={styles.container}>
           {data
-            ?.map(({name, images}, index) => {
+            ?.map(({name, images, id}, index) => {
               const isFirst = index === 0;
               const dragHandlers = isFirst ? panResponder.panHandlers : {};
 
@@ -110,6 +110,7 @@ const Discover = () => {
                 <Card
                   key={name}
                   name={name}
+                  id={id}
                   source={images[0]}
                   isFirst={isFirst}
                   swipe={swipe}
