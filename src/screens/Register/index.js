@@ -4,11 +4,12 @@ import {
   View,
   Image,
   ImageBackground,
+  ScrollView,
   ActivityIndicator,
 } from 'react-native';
 import React, {useState} from 'react';
-import {createUserWithEmailAndPassword} from 'firebase/auth';
-import {authentication} from '../../../firebase/firebase-config';
+// import {createUserWithEmailAndPassword} from 'firebase/auth';
+// import {authentication} from '../../../firebase/firebase-config';
 import Heading from '../../components/Heading';
 import StylesShare from '../../config/styles';
 import AppButton from '../../components/Button';
@@ -28,16 +29,6 @@ const Register = () => {
   const [errorPassword, setErrorPassword] = useState('');
   const [errorCfPassword, setErrorCfPassword] = useState('');
   const [errorUsername, setErrorUsername] = useState('');
-
-  // const registerUser = () => {
-  //       createUserWithEmailAndPassword(authentication, email, password)
-  //         .then(re => {
-  //           setIsSignedIn(true);
-  //         })
-  //         .catch(re => {
-  //           console.log(re);
-  //         });
-  //     };
 
   const validateEmail = email => {
     var emailRe = /\S+@\S+\.\S+/;
@@ -119,19 +110,20 @@ const Register = () => {
 
 
   return (
-    <View style={{flex: 1}}>
+    <ScrollView style={{flex: 1, backgroundColor:'#fff'}} showsVerticalScrollIndicator={false}>
       <ImageBackground
         source={require('../../assets/images/bgSignIn.jpeg')}
         style={{
-          flex: 1,
           backgroundColor: 'black',
+          height: StylesShare.screenHeight /2.7,
+          justifyContent:'center'
         }}
-        resizeMode="cover">
+        >
         <Image
           source={require('../../assets/icons/Logo.png')}
           style={styles.logo}
         />
-        <Heading style={{color: 'white'}}>Perfect Date</Heading>
+        <Text style={styles.title}>Perfect Date</Text>
         <Text
           style={{
             fontFamily: StylesShare.fontFamily,
@@ -141,17 +133,18 @@ const Register = () => {
           }}>
           Hẹn hò là chuyện nhỏ
         </Text>
+        </ImageBackground>
         <View style={styles.mainField}>
           <AppTextInput
             placeholder="Username"
-            icon="user"
+            icon="account"
             value={username}
             onChangeText={username => setUsername(username)}
           />
 
           <AppTextInput
             placeholder="Email"
-            icon="user"
+            icon="email"
             value={email}
             onChangeText={text => setEmail(text)}
           />
@@ -182,27 +175,30 @@ const Register = () => {
             onPress={()=>handleSubmit({email,password,username})}
           />
         </View>
-      </ImageBackground>
-    </View>
+    </ScrollView>
   );
 };
 
 export default Register;
 
 const styles = StyleSheet.create({
+  title: {
+    color: 'white', 
+    textAlign:'center',
+    fontFamily: StylesShare.fontFamily,
+    fontWeight: 'bold',
+    fontSize:40
+  },
   mainField: {
-    flex: 2,
+    marginTop: -25,
     backgroundColor: 'white',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderTopStartRadius: 30,
+    borderTopEndRadius: 30,
     padding: 20,
-    marginTop: StylesShare.screenHeight / 20,
   },
   logo: {
     width: 74,
     height: 70,
-    position: 'absolute',
-    top: 30,
-    left: StylesShare.screenWidth / 2 - 37,
+    alignSelf:'center',
   },
 });

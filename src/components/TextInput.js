@@ -1,7 +1,7 @@
 import React from "react";
-import { View, TextInput, StyleSheet } from "react-native";
+import { View, TextInput, StyleSheet, Platform } from "react-native";
 import StylesShare from "../config/styles";
-import Icon from "react-native-vector-icons/AntDesign"
+import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 
 
 function AppTextInput({ icon, width = "100%", ...otherProps }) {
@@ -18,7 +18,7 @@ function AppTextInput({ icon, width = "100%", ...otherProps }) {
       <TextInput
         autoCapitalize="none"
         placeholderTextColor={StylesShare.medium}
-        style={StylesShare.fontFamily}
+        style={[StylesShare.fontFamily, {padding:Platform.OS=='ios'?10:0, fontSize:20}]}
         {...otherProps}
       />
     </View>
