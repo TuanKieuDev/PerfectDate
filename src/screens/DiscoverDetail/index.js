@@ -3,7 +3,7 @@ import {
   Text,
   View,
   Button,
-  FlatList,
+  TouchableOpacity,
   ActivityIndicator,
   Image,
   ScrollView,
@@ -13,8 +13,9 @@ import {useNavigation} from '@react-navigation/native';
 import {collection, getDocs, where, query} from 'firebase/firestore/lite';
 import {db} from '../../../firebase/firebase-config';
 import StylesShare from '../../config/styles';
-import Icon from 'react-native-vector-icons/Entypo'
-import AntIcon from 'react-native-vector-icons/AntDesign'
+import Icon from 'react-native-vector-icons/Entypo';
+import AntIcon from 'react-native-vector-icons/AntDesign';
+import AppText from '../../components/Text'
 
 const DiscoverDetail = ({route}) => {
   const navigation = useNavigation();
@@ -71,23 +72,32 @@ const DiscoverDetail = ({route}) => {
             <View>
               <View style={{flexDirection: 'row'}}>
                 <Text style={[styles.txt, styles.name]}>{data?.name}</Text>
-                <AntIcon name='checkcircle' size={25} color='blue' style={{marginTop:5, marginLeft:10}}/>
+                <AntIcon
+                  name="checkcircle"
+                  size={25}
+                  color="green"
+                  style={{marginTop: 5, marginLeft: 10}}
+                />
               </View>
-              <View style={{flexDirection:'row', marginVertical:5}}>
-                <Icon name='location' size={20} color='green'/>
-                <Text style={{fontSize:16, marginLeft:10, fontWeight: '500'}}>{data?.location}</Text>
+              <View style={{flexDirection: 'row', marginVertical: 5}}>
+                <Icon name="location" size={20} color="blue" />
+                <Text style={{fontSize: 16, marginLeft: 10, fontWeight: '500'}}>
+                  {data?.location}
+                </Text>
               </View>
-              <View style={{flexDirection:'row'}}>
-                <Text style={{fontWeight:'bold', fontSize:16}}>Lượt thích: </Text>
-                <Text style={{color:'red', fontSize: 16}}>{data?.liked}</Text>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={{fontWeight: 'bold', fontSize: 16}}>
+                  Lượt thích:{' '}
+                </Text>
+                <Text style={{color: 'red', fontSize: 16}}>{data?.liked}</Text>
               </View>
             </View>
 
             <View>
               <Text style={styles.title}>Giới thiệu</Text>
-              <Text style={[styles.txt, styles.description]}>
+              <AppText>
                 {data?.description}
-              </Text>
+              </AppText>
             </View>
 
             <Text style={styles.title}>Sở thích</Text>
@@ -105,10 +115,10 @@ const DiscoverDetail = ({route}) => {
             </View>
           </View>
 
-          {/* <Button
-            title="Checkout"
-            onPress={() => navigation.navigate('Checkout')}
-          /> */}
+          <TouchableOpacity style={styles.checkoutBtn} onPress={()=>navigation.navigate('Checkout')}>
+            <Image source={require('../../assets/icons/Booking.png')} style={{width:40, height:40, marginTop:-10, marginRight:10}}/>  
+            <AppText style={styles.checkoutTxt}>Lên lịch</AppText>
+          </TouchableOpacity>
         </ScrollView>
       )}
     </View>
@@ -132,7 +142,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     marginTop: 25,
-    marginBottom:10,
+    marginBottom: 10,
   },
   txt: {
     fontFamily: StylesShare.fontFamily,
@@ -140,10 +150,7 @@ const styles = StyleSheet.create({
   name: {
     color: StylesShare.app,
     fontSize: 30,
-    fontWeight: 'bold'
-  },
-  description: {
-    fontSize: 16,
+    fontWeight: 'bold',
   },
   habitBox: {
     paddingVertical: 10,
@@ -160,4 +167,20 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#fff',
   },
+  checkoutBtn: {
+    width: '50%',
+    height: 60,
+    flexDirection:'row',
+    backgroundColor: StylesShare.app,
+    alignSelf: 'center',
+    borderRadius:40,
+    marginVertical:30,
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  checkoutTxt: {
+    fontSize:20,
+    fontWeight:'600',
+    color:'#fff',
+  }
 });
