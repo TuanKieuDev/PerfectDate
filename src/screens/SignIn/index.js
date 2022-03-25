@@ -86,7 +86,7 @@ const SignIn = () => {
         <ErrorMessage error={error} visible={loginFailed} />
         <AppTextInput
           placeholder="Email"
-          icon="email"
+          icon="at"
           value={email}
           onChangeText={text => setEmail(text)}
         />

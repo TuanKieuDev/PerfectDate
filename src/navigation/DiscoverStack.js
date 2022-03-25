@@ -8,21 +8,21 @@ const Stack = createNativeStackNavigator();
 
 function DiscoverStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen
         name="Discover"
         component={Discover}
-        options={{headerShown: false}}
+        // options={{headerShown: false}}
       />
       <Stack.Screen
         name="DiscoverDetail"
         component={DiscoverDetail}
-        options={{headerShown: false}}
+        // options={{headerShown: false}}
       />
       <Stack.Screen
         name="Checkout"
         component={Checkout}
-        options={{headerTitle: '', headerBackTitle: ''}}
+        // options={{headerTitle: '', headerBackTitle: ''}}
       />
     </Stack.Navigator>
   );

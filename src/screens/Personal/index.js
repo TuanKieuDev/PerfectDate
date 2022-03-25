@@ -70,8 +70,8 @@ const Personal = () => {
       />
 
       <AccountSector name={'Nạp Points'} imgSource={require('../../assets/icons/coin.png')}/>
-      <AccountSector name={'Lịch sử hẹn hò'} imgSource={require('../../assets/icons/date_checked.png')}/>
-      <AccountSector name={'Đổi mật khẩu'} imgSource={require('../../assets/icons/edit.png')} screenName={'ChangePassword'}/>
+      <AccountSector name={'Lịch sử hẹn hò'} imgSource={require('../../assets/icons/date_checked.png')} screenName={'HistoryDating'}/>
+      <AccountSector name={'Đổi mật khẩu'} imgSource={require('../../assets/icons/edit.png')} screenName={'ChangePassword'} props={dataUser}/>
 
       <View style={{width: '50%', alignSelf: 'center'}}>
         <AppButton

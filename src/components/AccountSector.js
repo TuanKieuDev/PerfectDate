@@ -3,11 +3,11 @@ import React from 'react'
 import StylesShare from '../config/styles'
 import { useNavigation } from '@react-navigation/native'
 
-const AccountSector = ({imgSource,name,screenName}) => {
+const AccountSector = ({imgSource,name,screenName, props}) => {
   const navigation = useNavigation()
 
   return (
-    <TouchableOpacity style={styles.shadowBox} onPress={() => navigation.navigate(screenName)}> 
+    <TouchableOpacity style={styles.shadowBox} onPress={() => navigation.navigate(screenName, props)}> 
         <Image source={imgSource} style={styles.img}/>
         <Text style={styles.name}>{name}</Text>
       </TouchableOpacity>

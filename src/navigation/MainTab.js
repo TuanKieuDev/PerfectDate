@@ -18,7 +18,7 @@ export default function App() {
         tabBarStyle: {
           backgroundColor: '#fff',
         },
-        headerShown: false,
+        
       }}
       tabBarOptions={{showLabel:false}}
       >
@@ -29,6 +29,7 @@ export default function App() {
             tabBarIcon: ({focused, color, size}) => {
               return <Icon name='search' size={25} color={color}/>;
             },
+            headerShown: false,
           }}
         />
         <Tab.Screen 
@@ -38,6 +39,7 @@ export default function App() {
             tabBarIcon: ({focused, color, size}) => {
               return <Icon name='heartbeat' size={25} color={color}/>;
             },
+          
           }}
         />
         <Tab.Screen 
@@ -47,6 +49,7 @@ export default function App() {
             tabBarIcon: ({focused, color, size}) => {
               return <Icon name='user-circle' size={25} color={color}/>;
             },
+            headerShown: false
           }}
         />
       </Tab.Navigator>

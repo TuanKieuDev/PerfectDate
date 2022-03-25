@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet } from 'react-native'
 import AppIntroSlider from 'react-native-app-intro-slider'
 import Ion from 'react-native-vector-icons/dist/Ionicons'
 import {useNavigation} from '@react-navigation/native'
+import StylesShare from '../../config/styles'
 
 const Onboarding = () => {
     const navigation = useNavigation();
@@ -10,20 +11,20 @@ const Onboarding = () => {
         {
             key: "slide1",
             image: require("../../assets/images/onboarding/ob1.png"),
-            title: "Welcome to React Native News App.",
-            text: "Here you can read latest news updates. By registering to this application.",
+            title: "Chào mừng bạn đã đến với Perfect Date.",
+            text: "Ứng dụng đầu tiên tại Việt Nam cung cấp dịch vụ hẹn hò với nhiều tính năng độc đáo.",
         },
         {
             key: "slide2",
             image: require("../../assets/images/onboarding/ob2.png"),
-            title: "Read News",
-            text: "Read news at anywhere at any place just by connecting to the internet.",
+            title: "Hẹn hò",
+            text: "Bạn cần một người sưởi ấm trái tim lạnh giá, hay chỉ đơn giản là muốn dẫn người yêu về ra mắt?\n Đừng lo, đã có Perfect Date.",
         },
         {
             key: "slide3",
             image: require("../../assets/images/onboarding/ob3.png"),
-            title: "Add to favorite",
-            text: "Add to your favorite read list and also you can add comments.",
+            title: "Tính năng",
+            text: "Chúng tôi cung cấp các gói dịch vụ tối ưu cho người sử dụng, phương thức thanh toán đa dạng và đặc biệt bảo mật thông tin của khách hàng.",
         },
     ]
 
@@ -69,7 +70,7 @@ const Onboarding = () => {
     const _renderSkipButton = () => {
         return (
             <View  style={styles.skipView}>
-                <Text style={styles.skipTextColor}>Skip</Text>
+                <Text style={styles.skipTextColor}>Bỏ qua</Text>
             </View>
         )
     }
@@ -136,7 +137,7 @@ const styles = StyleSheet.create({
   buttonCircle: {
     width: 40,
     height: 40,
-    backgroundColor: 'rgba(0,0,0,.2)',
+    backgroundColor: StylesShare.app,
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   skipView: {
-    width: 40,
+    width: 70,
     height: 40,
     borderRadius: 20,
     justifyContent: 'center',

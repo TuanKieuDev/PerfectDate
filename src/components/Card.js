@@ -12,11 +12,20 @@ import React, {useCallback} from 'react';
 import StylesShare from '../config/styles';
 import LinearGradient from 'react-native-linear-gradient';
 import Choice from './Choice';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('screen');
 
-const Card = ({name, source, isFirst, swipe, tiltSign, screenName, id, ...rest}) => {
+const Card = ({
+  name,
+  source,
+  isFirst,
+  swipe,
+  tiltSign,
+  screenName,
+  id,
+  ...rest
+}) => {
   const navigation = useNavigation();
 
   const rotate = Animated.multiply(swipe.x, tiltSign).interpolate({
@@ -47,7 +56,12 @@ const Card = ({name, source, isFirst, swipe, tiltSign, screenName, id, ...rest})
           ]}>
           <Choice type="like" color="#00eda6" />
         </Animated.View>
-        <Animated.View style={[styles.choiceContainer, styles.nopeContainer, {opacity: nopeOpacity}]}>
+        <Animated.View
+          style={[
+            styles.choiceContainer,
+            styles.nopeContainer,
+            {opacity: nopeOpacity},
+          ]}>
           <Choice type="nope" color="#ff006f" />
         </Animated.View>
       </>
@@ -68,8 +82,8 @@ const Card = ({name, source, isFirst, swipe, tiltSign, screenName, id, ...rest})
         style={styles.gradient}
       />
       <Text style={styles.name}>{name}</Text>
-      {isFirst && renderChoice()}
-      <TouchableOpacity onPress={()=>navigation.navigate(screenName, id)}>
+      {/* {isFirst && renderChoice()} */}
+      <TouchableOpacity onPress={() => navigation.navigate(screenName, id)}>
         <Text style={styles.detail}>Chi tiết</Text>
       </TouchableOpacity>
     </Animated.View>
@@ -107,10 +121,10 @@ const styles = StyleSheet.create({
     fontFamily: StylesShare.fontFamily,
   },
   detail: {
-    color:'orange', 
-    position:'absolute', 
-    bottom:30, 
-    right:10,
+    color: 'orange',
+    position: 'absolute',
+    bottom: 30,
+    right: 10,
     fontFamily: StylesShare.fontFamily,
     fontSize: 15,
   },

@@ -6,7 +6,7 @@ import DiscoverDetail from '../screens/DiscoverDetail';
 
 const Stack = createNativeStackNavigator();
 
-function DiscoverStack() {
+function FavouriteStack() {
   return (
       <Stack.Navigator screenOptions={{
           headerShown: false
@@ -17,4 +17,4 @@ function DiscoverStack() {
   );
 }
 
-export default DiscoverStack;
+export default FavouriteStack;

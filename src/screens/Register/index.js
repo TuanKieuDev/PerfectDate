@@ -6,6 +6,7 @@ import {
   ImageBackground,
   ScrollView,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 // import {createUserWithEmailAndPassword} from 'firebase/auth';
@@ -16,8 +17,15 @@ import AppButton from '../../components/Button';
 import AppTextInput from '../../components/TextInput';
 import ErrorMessage from '../../components/ErrorMessage';
 import {useNavigation} from '@react-navigation/native';
-import { doc, setDoc, query, collection, where, getDocs } from 'firebase/firestore/lite';
-import { db } from '../../../firebase/firebase-config';
+import {
+  doc,
+  setDoc,
+  query,
+  collection,
+  where,
+  getDocs,
+} from 'firebase/firestore/lite';
+import {db} from '../../../firebase/firebase-config';
 
 const Register = () => {
   const navigation = useNavigation();
@@ -37,30 +45,32 @@ const Register = () => {
 
   const validatePassword = password => {
     //it nhat 1 ki tu in hoa, 1 ki in thuong, 1 chu so va do dai >=8
-    let passRe = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/
-    return passRe.test(password)
+    let passRe = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+    return passRe.test(password);
   };
 
-  const validateForm = async(e, p, u) => {
+  const validateForm = async (e, p, u) => {
     if (validateEmail(e) && validatePassword(p)) {
-      return true
-    } 
-    if(!validateEmail(e)){
-      setErrorEmail('Vui lòng điền email theo mẫu: abc@xyz.com')
-    } 
-    if(!validatePassword(p)){
-      setErrorPassword('Mật khẩu phải có ít nhất 8 kí tư, bao gồm chữ in hoa, in thường và chữ số')
+      return true;
     }
-    if(!a){
-      setErrorEmail('Tài khoản đã tồn tại')
+    if (!validateEmail(e)) {
+      setErrorEmail('Vui lòng điền email theo mẫu: abc@xyz.com');
+    }
+    if (!validatePassword(p)) {
+      setErrorPassword(
+        'Mật khẩu phải có ít nhất 8 kí tư, bao gồm chữ in hoa, in thường và chữ số',
+      );
+    }
+    if (!a) {
+      setErrorEmail('Tài khoản đã tồn tại');
     }
     // if(password!=cf_password){
     //   setErrorCfPassword('Xác nhận mật khẩu không khớp, vui lòng thử lại.')
     // }
-    return false
-  }
+    return false;
+  };
 
-  const checkExist = async(email) => {
+  const checkExist = async email => {
     const emailCol = query(
       collection(db, 'users'),
       where('email', '==', email),
@@ -68,57 +78,68 @@ const Register = () => {
     try {
       const emailSnapshot = await getDocs(emailCol);
       const emailList = emailSnapshot.docs.map(doc => doc.data());
-      if (emailList.length>0) {
-        setErrorEmail('Email đã tồn tại, vui lòng thử lại.')
-        return true
+      if (emailList.length > 0) {
+        setErrorEmail('Email đã tồn tại, vui lòng thử lại.');
+        return true;
       }
-      return false
+      return false;
     } catch (error) {
       console.log('error', error);
     }
-  }
+  };
 
-  const checkEmpty = (e,p,u) => {
-    if(e.trim().length>0 && p.trim().length>0 && u.trim().length>0)
-      return true
-    return false
-  }
+  const checkEmpty = (e, p, u) => {
+    if (e.trim().length > 0 && p.trim().length > 0 && u.trim().length > 0)
+      return true;
+    return false;
+  };
 
-  const handleSubmit = async({email, password, username}) => {
-    const ran = Math.floor(Math.random() * 100000000)
-    const check = await checkExist(email)
+  const handleSubmit = async (email, password, username) => {
+    const ran = Math.floor(Math.random() * 100000000);
+    const check = await checkExist(email);
     console.log(check);
-    if(validateForm(email,password,username)&&!check&&checkEmpty(email,password,username)){
+    if (
+      validateForm(email, password, username) &&
+      !check &&
+      checkEmpty(email, password, username)
+    ) {
       try {
-        await setDoc(doc(db, "users", `${ran}`), {
+        await setDoc(doc(db, 'users', `${ran}`), {
           dated: [],
           email: email,
           like: [],
           password: password,
-          points:1000,
+          points: 1000,
           username: username,
-        })
-        alert('Đăng kí thành công')
-        navigation.navigate('SignIn')
+        });
+        Alert.alert(
+          'Đăng kí thành công',
+          'Quý khách vui lòng đăng nhập lại để sử dụng dịch vụ',
+          [{text: 'OK', onPress: () => navigation.navigate('SignIn')}],
+        );
       } catch (error) {
         console.log(error);
-      } 
-    }else{
-      alert('Đăng kí thất bại')
+      }
+    } else {
+      Alert.alert(
+        'Đăng kí thất bại',
+        'Quý khách vui lòng đăng kí theo đúng mẫu để sử dụng dịch vụ',
+        [{text: 'OK', onPress: () => {}}],
+      );
     }
-  }
-
+  };
 
   return (
-    <ScrollView style={{flex: 1, backgroundColor:'#fff'}} showsVerticalScrollIndicator={false}>
+    <ScrollView
+      style={{flex: 1, backgroundColor: '#fff'}}
+      showsVerticalScrollIndicator={false}>
       <ImageBackground
         source={require('../../assets/images/bgSignIn.jpeg')}
         style={{
           backgroundColor: 'black',
-          height: StylesShare.screenHeight /2.7,
-          justifyContent:'center'
-        }}
-        >
+          height: StylesShare.screenHeight / 2.7,
+          justifyContent: 'center',
+        }}>
         <Image
           source={require('../../assets/icons/Logo.png')}
           style={styles.logo}
@@ -133,33 +154,39 @@ const Register = () => {
           }}>
           Hẹn hò là chuyện nhỏ
         </Text>
-        </ImageBackground>
-        <View style={styles.mainField}>
-          <AppTextInput
-            placeholder="Username"
-            icon="account"
-            value={username}
-            onChangeText={username => setUsername(username)}
-          />
+      </ImageBackground>
+      <View style={styles.mainField}>
+        <AppTextInput
+          placeholder="Username"
+          icon="account"
+          value={username}
+          onChangeText={username => setUsername(username)}
+        />
 
-          <AppTextInput
-            placeholder="Email"
-            icon="email"
-            value={email}
-            onChangeText={text => setEmail(text)}
-          />
-          <ErrorMessage error={errorEmail} visible={!validateEmail(email)||checkExist(email)} />
+        <AppTextInput
+          placeholder="Email"
+          icon="at"
+          value={email}
+          onChangeText={text => setEmail(text)}
+        />
+        <ErrorMessage
+          error={errorEmail}
+          visible={!validateEmail(email) || checkExist(email)}
+        />
 
-          <AppTextInput
-            placeholder="Password"
-            icon="key"
-            value={password}
-            onChangeText={password => setPassword(password)}
-            secureTextEntry
-          />
-          <ErrorMessage error={errorPassword} visible={!validatePassword(password)} />
+        <AppTextInput
+          placeholder="Password"
+          icon="key"
+          value={password}
+          onChangeText={password => setPassword(password)}
+          secureTextEntry
+        />
+        <ErrorMessage
+          error={errorPassword}
+          visible={!validatePassword(password)}
+        />
 
-          {/* <AppTextInput
+        {/* <AppTextInput
             placeholder="Confirm password"
             icon="key"
             value={cf_password}
@@ -168,13 +195,13 @@ const Register = () => {
           />
           <ErrorMessage error={errorCfPassword} visible={password==cf_password?false:true} /> */}
 
-          <AppButton
-            color="app"
-            textColor={'white'}
-            title="Xác nhận"
-            onPress={()=>handleSubmit({email,password,username})}
-          />
-        </View>
+        <AppButton
+          color="app"
+          textColor={'white'}
+          title="Xác nhận"
+          onPress={() => handleSubmit(email, password, username)}
+        />
+      </View>
     </ScrollView>
   );
 };
@@ -183,11 +210,11 @@ export default Register;
 
 const styles = StyleSheet.create({
   title: {
-    color: 'white', 
-    textAlign:'center',
+    color: 'white',
+    textAlign: 'center',
     fontFamily: StylesShare.fontFamily,
     fontWeight: 'bold',
-    fontSize:40
+    fontSize: 40,
   },
   mainField: {
     marginTop: -25,
@@ -199,6 +226,6 @@ const styles = StyleSheet.create({
   logo: {
     width: 74,
     height: 70,
-    alignSelf:'center',
+    alignSelf: 'center',
   },
 });

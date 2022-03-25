@@ -115,7 +115,7 @@ const DiscoverDetail = ({route}) => {
             </View>
           </View>
 
-          <TouchableOpacity style={styles.checkoutBtn} onPress={()=>navigation.navigate('Checkout')}>
+          <TouchableOpacity style={styles.checkoutBtn} onPress={()=>navigation.navigate('Checkout', data)}>
             <Image source={require('../../assets/icons/Booking.png')} style={{width:40, height:40, marginTop:-10, marginRight:10}}/>  
             <AppText style={styles.checkoutTxt}>Lên lịch</AppText>
           </TouchableOpacity>
