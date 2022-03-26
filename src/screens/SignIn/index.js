@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import StylesShare from '../../config/styles';
@@ -44,7 +45,11 @@ const SignIn = () => {
         }
         navigation.navigate('MainTab');
       } else {
-        alert('Đăng nhập thất bại');
+        Alert.alert(
+          'Đăng nhập thất bại',
+          'Quý khách vui lòng đăng nhập đúng tài khoản đã đăng kí để sử dụng dịch vụ.',
+          [{text: 'OK', onPress: () => {}}],
+        );
       }
     } catch (error) {
       console.log('error', error);

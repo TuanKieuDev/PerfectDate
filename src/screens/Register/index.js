@@ -9,9 +9,6 @@ import {
   Alert,
 } from 'react-native';
 import React, {useState} from 'react';
-// import {createUserWithEmailAndPassword} from 'firebase/auth';
-// import {authentication} from '../../../firebase/firebase-config';
-import Heading from '../../components/Heading';
 import StylesShare from '../../config/styles';
 import AppButton from '../../components/Button';
 import AppTextInput from '../../components/TextInput';

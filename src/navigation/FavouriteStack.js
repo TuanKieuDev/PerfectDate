@@ -8,11 +8,9 @@ const Stack = createNativeStackNavigator();
 
 function FavouriteStack() {
   return (
-      <Stack.Navigator screenOptions={{
-          headerShown: false
-      }}>
-        <Stack.Screen name="Favourite" component={Favourite} />
-        <Stack.Screen name="DiscoverDetail" component={DiscoverDetail} />
+      <Stack.Navigator>
+        <Stack.Screen name="Favourite" component={Favourite} options={{headerTitle:'Yêu thích'}}/>
+        <Stack.Screen name="DiscoverDetail" component={DiscoverDetail} options={{headerShown:false}}/>
       </Stack.Navigator>
   );
 }

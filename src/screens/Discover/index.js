@@ -4,7 +4,6 @@ import {
   View,
   PanResponder,
   SafeAreaView,
-  ActivityIndicator,
   Animated,
 } from 'react-native';
 import React, {useState, useEffect, useRef, useCallback} from 'react';
@@ -14,6 +13,7 @@ import {collection, getDocs, where, query} from 'firebase/firestore/lite';
 import Card from '../../components/Card';
 import StylesShare from '../../config/styles';
 import RoundButton from '../../components/RoundButton';
+import ActivityIndicator from '../../components/ActivityIndicator'
 
 const Discover = () => {
   const navigation = useNavigation();
@@ -96,10 +96,9 @@ const Discover = () => {
   }, [swipe]);
 
   return (
-    <SafeAreaView>
-      {loading ? (
-        <ActivityIndicator />
-      ) : (
+    <>
+        <ActivityIndicator visible={loading}/>
+        <SafeAreaView>
         <View style={styles.container}>
           {data
             ?.map(({name, images, id}, index) => {
@@ -126,8 +125,8 @@ const Discover = () => {
             <RoundButton name="male" size={30} color="#00eda6" onPress={()=>{getDataMale();setIsGirl(false)}}/>
           </View>
         </View>
-      )}
-    </SafeAreaView>
+        </SafeAreaView>
+    </>
   );
 };
 

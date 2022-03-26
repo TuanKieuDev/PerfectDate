@@ -39,7 +39,7 @@ export default function App() {
             tabBarIcon: ({focused, color, size}) => {
               return <Icon name='heartbeat' size={25} color={color}/>;
             },
-          
+            headerShown: false,
           }}
         />
         <Tab.Screen 

@@ -17,7 +17,7 @@ function DiscoverStack() {
       <Stack.Screen
         name="DiscoverDetail"
         component={DiscoverDetail}
-        // options={{headerShown: false}}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="Checkout"

@@ -2,8 +2,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
-  ActivityIndicator,
   SafeAreaView,
   Image,
 } from 'react-native';
@@ -25,7 +23,6 @@ const Personal = () => {
     try {
       const jsonValue = await AsyncStorage.getItem('userInfo');
       setDataUser(JSON.parse(jsonValue));
-      setLoading(false);
     } catch (e) {
       console.log(e);
     }
@@ -69,7 +66,7 @@ const Personal = () => {
         }}
       />
 
-      <AccountSector name={'Nạp Points'} imgSource={require('../../assets/icons/coin.png')}/>
+      <AccountSector name={'Nạp Point'} imgSource={require('../../assets/icons/coin.png')} screenName={'Coin'} props={dataUser}/>
       <AccountSector name={'Lịch sử hẹn hò'} imgSource={require('../../assets/icons/date_checked.png')} screenName={'HistoryDating'}/>
       <AccountSector name={'Đổi mật khẩu'} imgSource={require('../../assets/icons/edit.png')} screenName={'ChangePassword'} props={dataUser}/>
 

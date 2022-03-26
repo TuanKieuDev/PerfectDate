@@ -5,16 +5,21 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  Modal,
-  Pressable,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import AppText from '../../components/Text';
 import StylesShare from '../../config/styles';
 import Icon from 'react-native-vector-icons/AntDesign';
-import AppModal from '../../components/AppModal';
+import {useNavigation} from '@react-navigation/native';
+import { db } from '../../../firebase/firebase-config';
+import { doc, query, collection, where, getDocs, updateDoc } from 'firebase/firestore/lite';
 
-const Checkout = () => {
+
+const Checkout = ({route}) => {
+  const dataUser = route.params;
+  console.log(dataUser, 'daaaa');
+  const navigation = useNavigation();
   const [selected, setSelected] = useState(100);
   const [points, setPoints] = useState(0);
   const data = [
@@ -47,31 +52,42 @@ const Checkout = () => {
       price: 500,
     },
   ];
-  const [showWarning, setShowWarning] = useState(false);
-  const [showWarning2, setShowWarning2] = useState(false);
 
+  const handleSubmit = async() => {
+    const rest = dataUser.points - points;
+    if (selected == 100) {
+      Alert.alert('Lỗi thanh toán', 'Quý khách chưa chọn gói dịch vụ sử dụng', [
+        {text: 'OK', onPress: () => {}},
+      ]);
+    } else {
+      if (rest >= 0) {
+        const usersCol = query(
+          collection(db, 'users'),
+          where('email', '==', dataUser.email),
+        );
+        try {
+          const usersSnapshot = await getDocs(usersCol);
+          await updateDoc(doc(db, 'users', `${usersSnapshot.docs[0].id}`), {
+            points: rest,
+          });
+          Alert.alert(
+            'Thanh toán thành công',
+            'Thông tin chi tiết về cuộc hẹn sẽ được gửi tới email của quý khách trong thời gian sớm nhất.\n\nCảm ơn quý khách.',
+            [{text: 'OK', onPress: () => navigation.navigate('Discover')}],
+          );
+        } catch (error) {
+          console.log('error', error);
+        }
+      } else {
+        Alert.alert('Lỗi thanh toán', 'Số dư của quý khách không đủ, vui lòng nạp thêm để sửa dụng.', [
+          {text: 'OK', onPress: () => {}},
+        ]);
+      }
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <AppModal 
-        visible={showWarning}
-        onRequestClose={() => setShowWarning(false)}
-        headerTitle="Lên lịch thành công"
-        bodyContent="Mọi thông tin về cuộc hẹn sẽ được gửi về
-        email của quý khách trong thời gian sớm nhất. Xin trân thành cảm
-        ơn quý khách."
-        // screenName="MainTab"
-        onPress={() => setShowWarning(false)}
-        />
-
-      <AppModal 
-        visible={showWarning2}
-        onRequestClose={() => setShowWarning2(false)}
-        headerTitle="Lỗi thanh toán"
-        bodyContent="Vui lòng chọn gói dịch vụ rồi thử lại sau."
-        // screenName="Checkout"
-        onPress={() => setShowWarning2(false)}
-        />
       <ScrollView showsVerticalScrollIndicator={false}>
         <AppText style={styles.title}>Các gói dịch vụ</AppText>
         {data.map((item, index) => (
@@ -81,9 +97,10 @@ const Checkout = () => {
               {borderColor: item.id == selected ? StylesShare.app : 'black'},
             ]}
             onPress={() => {
-              setSelected(item.id)
-              setPoints(item.price)
-              }}>
+              setSelected(item.id);
+              setPoints(item.price);
+            }}
+            key={index}>
             <View style={styles.boxTitle}>
               <Image source={item.image} style={{width: 60, height: 60}} />
               <AppText style={{fontSize: 30, fontWeight: '400'}}>
@@ -128,7 +145,7 @@ const Checkout = () => {
 
         <TouchableOpacity
           style={styles.checkoutBtn}
-          onPress={() => selected!=100 ? setShowWarning(true): setShowWarning2(true)}>
+          onPress={() => handleSubmit()}>
           <AppText style={styles.checkoutTxt}>Xác nhận</AppText>
         </TouchableOpacity>
       </ScrollView>
