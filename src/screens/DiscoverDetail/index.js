@@ -139,6 +139,7 @@ const DiscoverDetail = ({route}) => {
                   {data?.location}
                 </Text>
               </View>
+              <AppText>{data?.age} tuổi</AppText>
 
               {/* <View style={{flexDirection: 'row'}}>
                 <Text style={{fontWeight: 'bold', fontSize: 16}}>
@@ -186,6 +187,12 @@ const DiscoverDetail = ({route}) => {
                   <Text style={[styles.txt, styles.habitName]}>{item}</Text>
                 </View>
               ))}
+            </View>
+
+            <View>
+              <Text style={styles.title}>Khác</Text>
+              <AppText>Chiều cao: {data?.information.height} cm</AppText>
+              <AppText>Cân nặng: {data?.information.weight} kg</AppText>
             </View>
           </View>
 

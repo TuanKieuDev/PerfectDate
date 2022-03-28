@@ -121,8 +121,8 @@ const Discover = () => {
             })
             .reverse()}
           <View style={styles.choiceButton}>
-            <RoundButton name="female" size={30} color="#ff006f" onPress={()=>{getDataFemale();setIsGirl(true)}}/>
-            <RoundButton name="male" size={30} color="#00eda6" onPress={()=>{getDataMale();setIsGirl(false)}}/>
+            <RoundButton name="female" size={20} color="#ff006f" onPress={()=>{getDataFemale();setIsGirl(true)}}/>
+            <RoundButton name="male" size={20} color="#00eda6" onPress={()=>{getDataMale();setIsGirl(false)}}/>
           </View>
         </View>
         </SafeAreaView>
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   choiceButton: {
     position: 'absolute',
     flexDirection: 'row',
-    top: StylesShare.screenHeight * 0.76,
+    top: StylesShare.screenHeight * 0.78,
     width: 170,
     alignItems: 'center',
     justifyContent: 'space-between',

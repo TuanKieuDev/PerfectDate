@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   },
   name: {
     position: 'absolute',
-    bottom: 22,
+    bottom: 42,
     left: 22,
     fontSize: 36,
     fontWeight: 'bold',
@@ -123,10 +123,11 @@ const styles = StyleSheet.create({
   detail: {
     color: 'orange',
     position: 'absolute',
-    bottom: 30,
+    zIndex:999,
+    bottom: 10,
     right: 10,
     fontFamily: StylesShare.fontFamily,
-    fontSize: 15,
+    fontSize: 20,
   },
   choiceContainer: {
     position: 'absolute',
