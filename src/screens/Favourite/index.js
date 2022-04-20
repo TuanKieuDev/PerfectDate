@@ -5,25 +5,25 @@ import {
   FlatList,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
 import {getDocs, query, collection, where} from 'firebase/firestore/lite';
 import {db} from '../../../firebase/firebase-config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ActivityIndicator from '../../components/ActivityIndicator';
-import StylesShare from '../../config/styles';
 import LikeCard from '../../components/LikeCard';
 import AppText from '../../components/Text';
 import Icon from 'react-native-vector-icons/AntDesign'
 
-const Favourite = () => {
-  const navigation = useNavigation();
+const Favourite = ({navigation}) => {
 
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    getData();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      getData();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   const getData = async () => {
     const jsonValue = await AsyncStorage.getItem('userInfo');
@@ -60,6 +60,7 @@ const Favourite = () => {
 
   return (
     <>
+    {console.log(data, 'dattt')}
       {loading ? (
         <ActivityIndicator visible={loading} />
       ) : (

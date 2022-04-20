@@ -6,7 +6,7 @@ import {
   SafeAreaView,
   Animated,
 } from 'react-native';
-import React, {useState, useEffect, useRef, useCallback} from 'react';
+import React, {useState, useEffect,useLayoutEffect, useRef, useCallback} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {db} from '../../../firebase/firebase-config';
 import {collection, getDocs, where, query} from 'firebase/firestore/lite';
@@ -22,18 +22,21 @@ const Discover = () => {
   const [isGirl, setIsGirl] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
+    
     isGirl?getDataFemale():getDataMale();
   }, [data.length == 0]);
 
   const getDataMale = async () => {
+    setLoading(true);
     const modelCol = query(
       collection(db, 'model'),
       where('genres', '==', 'male'),
     );
     try {
       const modelSnapshot = await getDocs(modelCol);
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
       const modelList = modelSnapshot.docs.map(doc => doc.data());
       setData(modelList);
     } catch (error) {
@@ -42,13 +45,16 @@ const Discover = () => {
   };
 
   const getDataFemale = async () => {
+    setLoading(true);
     const modelCol = query(
       collection(db, 'model'),
       where('genres', '==', 'female'),
     );
     try {
       const modelSnapshot = await getDocs(modelCol);
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
       const modelList = modelSnapshot.docs.map(doc => doc.data());
       setData(modelList);
     } catch (error) {
@@ -141,10 +147,11 @@ const styles = StyleSheet.create({
   choiceButton: {
     position: 'absolute',
     flexDirection: 'row',
-    top: StylesShare.screenHeight * 0.78,
+    top: StylesShare.screenHeight * 0.84,
     width: 170,
     alignItems: 'center',
     justifyContent: 'space-between',
-    zIndex: -1,
+    zIndex: 99,
+    // bottom:200,
   },
 });

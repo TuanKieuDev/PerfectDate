@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: width * 0.9,
-    height: height * 0.73,
+    height: height * 0.7,
     borderRadius: 20,
   },
   gradient: {

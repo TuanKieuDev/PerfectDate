@@ -198,7 +198,7 @@ const DiscoverDetail = ({route}) => {
 
           <TouchableOpacity
             style={styles.checkoutBtn}
-            onPress={() => navigation.navigate('Checkout', dataUser)}>
+            onPress={() => navigation.navigate('Checkout', {dataUser: dataUser, dataMol: data})}>
             <Image
               source={require('../../assets/icons/Booking.png')}
               style={{width: 40, height: 40, marginTop: -10, marginRight: 10}}

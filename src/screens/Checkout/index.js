@@ -6,22 +6,38 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  Button,
 } from 'react-native';
 import React, {useState} from 'react';
 import AppText from '../../components/Text';
 import StylesShare from '../../config/styles';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {useNavigation} from '@react-navigation/native';
-import { db } from '../../../firebase/firebase-config';
-import { doc, query, collection, where, getDocs, updateDoc } from 'firebase/firestore/lite';
-
+import {db} from '../../../firebase/firebase-config';
+import {
+  doc,
+  query,
+  collection,
+  where,
+  getDocs,
+  updateDoc,
+  arrayUnion,
+} from 'firebase/firestore/lite';
+import DatePicker from 'react-native-date-picker';
 
 const Checkout = ({route}) => {
-  const dataUser = route.params;
+  const dataUser = route.params.dataUser;
+  const dataMol = route.params.dataMol;
   console.log(dataUser, 'daaaa');
+  console.log(dataMol, 'dataMol');
   const navigation = useNavigation();
   const [selected, setSelected] = useState(100);
   const [points, setPoints] = useState(0);
+  const [title, setTitle] = useState('')
+
+  const [date, setDate] = useState(new Date());
+  const [open, setOpen] = useState(false);
+
   const data = [
     {
       id: '0',
@@ -53,7 +69,8 @@ const Checkout = ({route}) => {
     },
   ];
 
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
+    console.log(date.toDateString());
     const rest = dataUser.points - points;
     if (selected == 100) {
       Alert.alert('Lỗi thanh toán', 'Quý khách chưa chọn gói dịch vụ sử dụng', [
@@ -69,6 +86,14 @@ const Checkout = ({route}) => {
           const usersSnapshot = await getDocs(usersCol);
           await updateDoc(doc(db, 'users', `${usersSnapshot.docs[0].id}`), {
             points: rest,
+            dated: arrayUnion(
+              {
+                date: date.toDateString(),
+                name: dataMol.name,
+                image: dataMol.images[0],
+                title: title,
+              }
+            )
           });
           Alert.alert(
             'Thanh toán thành công',
@@ -79,9 +104,11 @@ const Checkout = ({route}) => {
           console.log('error', error);
         }
       } else {
-        Alert.alert('Lỗi thanh toán', 'Số dư của quý khách không đủ, vui lòng nạp thêm để sửa dụng.', [
-          {text: 'OK', onPress: () => {}},
-        ]);
+        Alert.alert(
+          'Lỗi thanh toán',
+          'Số dư của quý khách không đủ, vui lòng nạp thêm để sửa dụng.',
+          [{text: 'OK', onPress: () => {}}],
+        );
       }
     }
   };
@@ -99,6 +126,7 @@ const Checkout = ({route}) => {
             onPress={() => {
               setSelected(item.id);
               setPoints(item.price);
+              setTitle(item.title)
             }}
             key={index}>
             <View style={styles.boxTitle}>
@@ -129,6 +157,30 @@ const Checkout = ({route}) => {
             </View>
           </TouchableOpacity>
         ))}
+
+        {/* <TouchableOpacity onPress={() => setOpen(true)} style={{paddingLeft:10}}>
+        <AppText style={styles.selectDateTxt}>
+          Chọn thời gian
+        </AppText>
+        </TouchableOpacity>
+        <DatePicker
+          modal
+          open={open}
+          date={date}
+          onConfirm={date => {
+            setOpen(false);
+            setDate(date);
+            console.log(date);
+          }}
+          onCancel={() => {
+            setOpen(false);
+          }}
+        /> */}
+
+        <View style={{padding: 10, alignItems: 'center'}}>
+          <AppText style={styles.selectDateTxt}>Chọn thời gian</AppText>
+          <DatePicker minimumDate={new Date()} mode="date" date={date} onDateChange={setDate} />
+        </View>
 
         <View style={{padding: 10}}>
           <AppText>
@@ -176,6 +228,11 @@ const styles = StyleSheet.create({
   boxTitle: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  selectDateTxt: {
+    color: StylesShare.app,
+    fontWeight: 'bold',
+    fontSize: 25,
   },
   checkoutBtn: {
     width: '50%',
