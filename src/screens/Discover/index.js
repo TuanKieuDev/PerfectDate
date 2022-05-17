@@ -126,12 +126,13 @@ const Discover = () => {
               );
             })
             .reverse()}
-          <View style={styles.choiceButton}>
-            <RoundButton name="female" size={20} color="#ff006f" onPress={()=>{getDataFemale();setIsGirl(true)}}/>
-            <RoundButton name="male" size={20} color="#00eda6" onPress={()=>{getDataMale();setIsGirl(false)}}/>
-          </View>
+          
         </View>
         </SafeAreaView>
+        <View style={styles.choiceButton}>
+            <RoundButton name="female" size={20} color="#ff006f" onPress={()=>{getDataFemale();setIsGirl(true)}}/>
+            <RoundButton name="male" size={20} color="#00eda6" onPress={()=>{getDataMale();setIsGirl(false)}}/>
+        </View>
     </>
   );
 };
@@ -147,11 +148,10 @@ const styles = StyleSheet.create({
   choiceButton: {
     position: 'absolute',
     flexDirection: 'row',
-    top: StylesShare.screenHeight * 0.84,
-    width: 170,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    zIndex: 99,
-    // bottom:200,
+    //top: StylesShare.screenHeight * 0.78,
+    bottom:20,
+    width: '100%',
+    justifyContent: 'space-around',
+    zIndex: -1,
   },
 });

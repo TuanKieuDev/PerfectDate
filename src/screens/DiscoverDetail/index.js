@@ -25,6 +25,7 @@ import AntIcon from 'react-native-vector-icons/AntDesign';
 import AppText from '../../components/Text';
 import ActivityIndicator from '../../components/ActivityIndicator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SliderBox } from 'react-native-image-slider-box';
 
 const DiscoverDetail = ({route}) => {
   const navigation = useNavigation();
@@ -80,6 +81,23 @@ const DiscoverDetail = ({route}) => {
     }
   };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   const handleLike = async () => {
     const usersCol = query(
       collection(db, 'users'),
@@ -113,14 +131,26 @@ const DiscoverDetail = ({route}) => {
     }
   };
 
-  // console.log('idddd', dataUser);
   return (
     <>
       <ActivityIndicator visible={loading} />
       <View>
         <ScrollView style={styles.container}>
-          <Image source={{uri: data?.images[0]}} style={styles.img} />
-
+          {/* <Image source={{uri: data?.images[0]}} style={styles.img} /> */}
+          {/* <View style={{flexDirection:'row', marginTop:10}}>
+          {
+            data?.images.map((item, index) => (
+              <Image key={index} source={{uri: item}} style={{width:100, height:150, borderRadius:10, margin:10}}/>
+            ))
+          }
+          </View> */}
+          {
+            data?.images.length>0
+            ?
+            <SliderBox images={data?.images} sliderBoxHeight={600} />
+            : null
+          }
+          
           <View style={{paddingHorizontal: 20}}>
             <View>
               <View style={{flexDirection: 'row'}}>
