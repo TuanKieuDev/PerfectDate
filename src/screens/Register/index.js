@@ -46,7 +46,7 @@ const Register = () => {
     return passRe.test(password);
   };
 
-  const validateForm = async (e, p, u) => {
+  const validateForm = async (e, p) => {
     if (validateEmail(e) && validatePassword(p)) {
       return true;
     }
@@ -66,6 +66,7 @@ const Register = () => {
     // }
     return false;
   };
+
 
   const checkExist = async email => {
     const emailCol = query(
@@ -94,9 +95,10 @@ const Register = () => {
   const handleSubmit = async (email, password, username) => {
     const ran = Math.floor(Math.random() * 100000000);
     const check = await checkExist(email);
-    console.log(check);
+    const validate = await validateForm(email, password)
+
     if (
-      validateForm(email, password, username) &&
+      validate &&
       !check &&
       checkEmpty(email, password, username)
     ) {
@@ -115,7 +117,7 @@ const Register = () => {
           [{text: 'OK', onPress: () => navigation.navigate('SignIn')}],
         );
       } catch (error) {
-        console.log(error);
+        console.log(error,'errr');
       }
     } else {
       Alert.alert(
@@ -123,6 +125,7 @@ const Register = () => {
         'Quý khách vui lòng đăng kí theo đúng mẫu để sử dụng dịch vụ',
         [{text: 'OK', onPress: () => {}}],
       );
+      console.log('nonnnnnnn');
     }
   };
 

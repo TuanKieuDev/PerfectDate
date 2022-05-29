@@ -47,6 +47,7 @@ const Favourite = ({navigation}) => {
         // console.log(modelList);
         setLoading(false);
       } else {
+        setData([]);
         setLoading(false);
       }
     } catch (error) {
