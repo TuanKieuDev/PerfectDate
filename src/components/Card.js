@@ -83,7 +83,7 @@ const Card = ({
       />
       <Text style={styles.name}>{name}</Text>
       {/* {isFirst && renderChoice()} */}
-      <TouchableOpacity onPress={() => navigation.navigate(screenName, id)}>
+      <TouchableOpacity style={styles.btn} onPressIn={() => navigation.navigate(screenName, id)}>
         <Text style={styles.detail}>Chi tiết</Text>
       </TouchableOpacity>
     </Animated.View>
@@ -120,12 +120,18 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontFamily: StylesShare.fontFamily,
   },
-  detail: {
-    color: 'orange',
+  btn: {
     position: 'absolute',
-    zIndex:999,
+    zIndex:1,
     bottom: 10,
     right: 10,
+  },
+  detail: {
+    color: 'orange',
+    // position: 'absolute',
+    // zIndex:999,
+    // bottom: 10,
+    // right: 10,
     fontFamily: StylesShare.fontFamily,
     fontSize: 20,
   },
